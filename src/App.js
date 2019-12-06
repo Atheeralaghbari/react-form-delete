@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
 
-function App() {
+import './App.css';
+// import Message from './message.js';
+import Row from './Row.js'
+import Form from './Form.js'
+export default class App extends Component {
+
+
+  state = {
+   
+    name:"",
+    address:"",
+    message:"",
+    submittedData: []
+  }
+ 
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+remove=(index)=>{   
+  const copyArray=Object.assign([],this.state.submittedData) 
+  copyArray.splice(index,1)
+this.setState( { submittedData: copyArray } )
+}
+ 
+  handleSubmit = event => {
+    event.preventDefault()
+    let formData = {name: this.state.name, address: this.state.address,message:this.state.message }
+    let dataArray = this.state.submittedData.concat(formData)
+    this.setState({submittedData: dataArray})
+  }
+ 
+  // listOfSubmissions = () => {
+  //   return this.state.submittedData.map(function (data,index) {
+  //     return(<tr>
+  //           <td key={index+1}>{index+1}</td>
+  //           <td>{data.firstName}</td>
+  //           <td>{data.lastName}</td>
+  //           <td><button onClick={e=>this.delete(this,index)}>delete</button></td>
+  //         </tr>)
+
+  //   })
+  // }
+  render() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  <Form   handleSubmit={this.handleSubmit} handleChange={this.handleChange}  name={this.name} address={this.address} message={this.message}/>
+  <Row  submittedData={this.state.submittedData} remove={this.remove}/>
     </div>
-  );
+  )
+  }
 }
-
-export default App;
